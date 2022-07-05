@@ -7,10 +7,14 @@ import com.xxl.rpc.core.remoting.invoker.call.XxlRpcInvokeFuture;
 import com.xxl.rpc.core.remoting.invoker.reference.XxlRpcReferenceBean;
 import com.xxl.rpc.core.remoting.invoker.route.LoadBalance;
 import com.xxl.rpc.core.remoting.net.impl.netty.client.NettyClient;
+import com.xxl.rpc.core.remoting.provider.XxlRpcProviderFactory;
 import com.xxl.rpc.sample.api.DemoService;
+import com.xxl.rpc.sample.api.MyService;
 import com.xxl.rpc.sample.api.dto.UserDTO;
 import com.xxl.rpc.core.serialize.impl.HessianSerializer;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -21,16 +25,19 @@ public class XxlRpcClientAplication {
 
 	public static void main(String[] args) throws Exception {
 
-		/*String serviceKey = XxlRpcProviderFactory.makeServiceKey(DemoService.class.getName(), null);
-		XxlRpcInvokerFactory.getInstance().getServiceRegistry().registry(new HashSet<String>(Arrays.asList(serviceKey)), "127.0.0.1:7080");*/
-
+		String serviceKey = XxlRpcProviderFactory.makeServiceKey(DemoService.class.getName(), null);
+		XxlRpcInvokerFactory.getInstance().getRegister().registry(new HashSet<>(Arrays.asList(serviceKey)), "127.0.0" +
+			".1:7080");
+		String serviceKey1 = XxlRpcProviderFactory.makeServiceKey(MyService.class.getName(), null);
+		XxlRpcInvokerFactory.getInstance().getRegister().registry(new HashSet<>(Arrays.asList(serviceKey1)), "127.0.0" +
+				".1:7081");
 		// test
-		testSYNC();
-		testFUTURE();
-		testCALLBACK();
-		testONEWAY();
-
-		TimeUnit.SECONDS.sleep(2);
+//		testSYNC();
+//		testFUTURE();
+//		testCALLBACK();
+//		testONEWAY();
+//
+//		TimeUnit.SECONDS.sleep(2);
 
 		// stop client invoker factory (default by getInstance, exist inner thread, need destory)
 		XxlRpcInvokerFactory.getInstance().stop();
